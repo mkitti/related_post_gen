@@ -1,0 +1,11 @@
+name = "RelatedPosts"
+uuid = "1c3a126b-7d2b-496b-bf22-1c4009009cb6"
+version = "1.0.0"
+
+[deps]
+ChunkSplitters = "ae650224-84b6-46f8-82ea-d812ca08434e"
+Dates = "ade2ca70-3891-5945-98fb-dc099432e06a"
+JSON3 = "0f8b85d8-7281-11e9-16c2-39a750bddbf1"
+Pkg = "44cfe95a-1eb2-52ea-b672-e2afdf69b78f"
+StaticArrays = "90137ffa-7385-5640-81b9-e52037218182"
+StructTypes = "856f2bd8-1eba-4b0a-8007-ebc267875bd4"

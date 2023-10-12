@@ -1,6 +1,7 @@
 abstract type Vector5{T} <: AbstractVector{T} end
 Base.size(::Vector5) = (5,)
 Base.IndexStyle(::Type{<: Vector5}) = IndexLinear()
+# @inline Base.getindex(A::Vector5, i::Int) = getfield(A, i)
 Base.getindex(A::Vector5, i::Int) = 
     i == 1 ? A.a :
     i == 2 ? A.b :
@@ -16,6 +17,7 @@ mutable struct MVector5{T} <: Vector5{T}
     d::T
     e::T
 end
+MVector5{T}(::UndefInitializer) where T = MVector5{T}()
 MVector5{T}() where T = MVector5{T}(zero(T), zero(T), zero(T), zero(T), zero(T))
 Base.setindex!(A::MVector5, v, i::Int) =
     i == 1 ? A.a = v :
