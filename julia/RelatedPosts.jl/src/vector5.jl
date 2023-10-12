@@ -1,16 +1,4 @@
-abstract type Vector5{T} <: AbstractVector{T} end
-Base.size(::Vector5) = (5,)
-Base.IndexStyle(::Type{<: Vector5}) = IndexLinear()
-# @inline Base.getindex(A::Vector5, i::Int) = getfield(A, i)
-Base.getindex(A::Vector5, i::Int) = 
-    i == 1 ? A.a :
-    i == 2 ? A.b :
-    i == 3 ? A.c :
-    i == 4 ? A.d :
-    i == 5 ? A.e :
-    throw(BoundsError(A, i))
-
-mutable struct MVector5{T} <: Vector5{T}
+mutable struct MVector5{T} <: AbstractVector{T}
     a::T
     b::T
     c::T
@@ -18,7 +6,21 @@ mutable struct MVector5{T} <: Vector5{T}
     e::T
 end
 MVector5{T}(::UndefInitializer) where T = MVector5{T}()
-MVector5{T}() where T = MVector5{T}(zero(T), zero(T), zero(T), zero(T), zero(T))
+function MVector5{T}() where T
+    v = zero(T)
+    MVector5{T}(v, v, v, v, v)
+end
+
+Base.size(::MVector5) = (5,)
+Base.IndexStyle(::Type{<: MVector5}) = IndexLinear()
+Base.getindex(A::MVector5, i::Int) = 
+    i == 1 ? A.a :
+    i == 2 ? A.b :
+    i == 3 ? A.c :
+    i == 4 ? A.d :
+    i == 5 ? A.e :
+    throw(BoundsError(A, i))
+
 Base.setindex!(A::MVector5, v, i::Int) =
     i == 1 ? A.a = v :
     i == 2 ? A.b = v :
@@ -27,14 +29,12 @@ Base.setindex!(A::MVector5, v, i::Int) =
     i == 5 ? A.e = v :
     throw(BoundsError(A, i))
 
-struct SVector5{T} <: Vector5{T}
-    a::T
-    b::T
-    c::T
-    d::T
-    e::T
+@inline function Base.fill!(A::MVector5{T}, v::T) where T
+    v = convert(T, v)
+    A.a = v
+    A.b = v
+    A.c = v
+    A.d = v
+    A.e = v
+    return A
 end
-SVector5{T}(nt::NTuple{5,T}) where T  =
-    SVector5{T}(nt...)
-SVector5(av::AbstractVector{T}) where T  =
-    SVector5{T}(av...)

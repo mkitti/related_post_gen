@@ -58,14 +58,14 @@ end
 struct RelatedPost
     _id::String
     tags::Vector{String}
-    related::SVector5{PostData}
+    related::NTuple{5, PostData}
 end
 
 StructTypes.StructType(::Type{PostData}) = StructTypes.Struct()
 
 function fastmaxindex!(xs::Vector, topn, maxn, maxv)
-    maxn .= 1
-    maxv .= 0
+    fill!(maxn, 1)
+    fill!(maxv, 0)
     top = maxv[1]
     T = eltype(maxn)
     for (i, x) in enumerate(xs)
@@ -128,7 +128,7 @@ function related(::Type{T}, posts) where {T}
 
         fastmaxindex!(taggedpostcount, topn, maxn, maxv)
 
-        relatedpost = RelatedPost(post._id, post.tags, SVector5(@view posts[maxn]))
+        relatedpost = RelatedPost(post._id, post.tags, NTuple{5}(@view posts[maxn]))
         relatedposts[i] = relatedpost
     end
 
@@ -179,7 +179,7 @@ function related_concurrent(::Type{T}, posts) where {T}
 
             fastmaxindex!(taggedpostcount, topn, maxn, maxv)
 
-            relatedpost = RelatedPost(post._id, post.tags, SVector5(@view posts[maxn]))
+            relatedpost = RelatedPost(post._id, post.tags, NTuple{5}(@view posts[maxn]))
             relatedposts[i] = relatedpost
         end
     end
